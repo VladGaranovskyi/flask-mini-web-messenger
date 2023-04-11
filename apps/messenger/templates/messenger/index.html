@@ -1,0 +1,45 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="chat">
+  <div class="header">
+    <h1>Messenger</h1>
+  </div>
+  <div class="messages">
+    {% for message in chat.messages %}
+    {% if current_user.is_authenticated and message.author_id == current_user.id %}
+    <div class="message sent">
+      {% if get_image(message.author_id) == '' %}
+      <img src="https://via.placeholder.com/50" alt="Profile Picture">
+      {% else %}
+      <img src="../{{ path }}/{{ get_image(message.author_id) }}" alt="Profile Picture">
+      {% endif %}
+      <div class="message-text">
+        <h3>{{ message.author.name }}</h3>
+        <p>{{ message.text }}</p>
+      </div>
+    </div>
+    {% else %}
+    <div class="message received">
+      {% if get_image(message.author_id) == '' %}
+      <img src="https://via.placeholder.com/50" alt="Profile Picture">
+      {% else %}
+      <img src="../{{ path }}/{{ get_image(message.author_id) }}" alt="Profile Picture">
+      {% endif %}
+      <div class="message-text">
+        <h3>{{ message.author.name }}</h3>
+        <p>{{ message.text }}</p>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% if current_user.is_authenticated %}
+  <form method="POST" action="{{ url_for('messenger.send_message') }}">
+  <div class="input-field">
+    <input type="text" name="msg" placeholder="Type your message here...">
+    <button>Send</button>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<h1>Profile Setup</h1>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+	{{ form.username.label }}
+	{{ form.username(placeholder_='Enter your username') }}
+	{{ form.profile_picture.label }}
+	{{ form.profile_picture(accept_='image/*') }}
+    <input type="submit" value="Save">
+</form>
+{% endblock %}
